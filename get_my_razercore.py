@@ -8,7 +8,7 @@ import socket
 import json
 
 RETRIEVE_DATA = 0
-SOCKET_CONNECTION = 0
+SOCKET_CONNECTION = 1
 NUM_TRIAL = 3
 
 def retrieve_data():
@@ -36,7 +36,7 @@ def retrieve_data():
     return title_price_list
 
     """ TODO: serialize the title_price_list and send to mobile device."""
-retrieve_data()
+
 HOST = "149.28.44.30"  # '114.246.73.95'
 PORT = 10101
 
