@@ -41,31 +41,28 @@ HOST = "149.28.44.30"  # '114.246.73.95'
 PORT = 10101
 
 if (SOCKET_CONNECTION):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # 定义socket类型，网络通信，TCP
-    s.bind((HOST, PORT))  # 套接字绑定的IP与端口
-    s.listen(1)  # 开始TCP监听,监听1个请求
-    print("Server is running")
-    while 1:
-        conn, addr = s.accept()
-        with conn:
-            print('Connected by', addr)
-            # receive the length of the data
-            while 1:
-                length = conn.recv(32)
-                # receive the data
-                data = conn.recv(int(length))
-                if (data == "request"):
+    
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:  # 定义socket类型，网络通信，TCP
+        s.bind((HOST, PORT))  # 套接字绑定的IP与端口
+        s.listen(1)  # 开始TCP监听,监听1个请求
+        
+        print("Server is running")
+        while True:
+            conn, addr = s.accept();
+            print("connected by", addr);
+            #print(repr(conn.recv(1024)));
+            with conn:
+
+                msg = conn.recv(1024);
+                if msg.decode('utf-8') == "request":
                     list = retrieve_data();
-                    json_string = json.dumps(list)
-                    conn.send(json_string)
+                    json_str = json.dumps(list);
+                    conn.sendall(json_str.encode());
+                else:
+                    conn.sendall(b"bye");
+                
 
 
-            # while True:
-            #     data = conn.recv(1024)
-            #     if not data: break
-            #     conn.sendall(data)
-
-    conn.close()  # 关闭连接
 
 
 
