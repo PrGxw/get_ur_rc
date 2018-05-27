@@ -63,14 +63,21 @@ if (SOCKET_CONNECTION):
                             list = retrieve_data(); # aquire data
                         except Exception as e:
                             trial += 1 # on fail, we go for another trial to retrieve data
+                            print("tiral");
                             if trial == 3:
-                                response_code = "ERROR";
+                                response_code = "ERROR\n";
                         else:
-                            response_code = "DATA_"
+                            response_code = "DATA_\n"
                             break # if data retrieval we break out of he loop and send the data
-                    json_str = json.dumps(list); # convert to json string
                     conn.sendall(response_code.encode()); # send the response code
-                    conn.sendall(json_str.encode()); # send data
+                    print("responseCode: " + response_code);
+                    if response_code == "DATA_\n":
+                        json_str = json.dumps(list); # convert to json string
+                        conn.sendall(json_str.encode()); # send data
+                    elif response_code == "ERROR\n":
+                        conn.sendall("No Data Were Found!".encod());
+
+                    
                 else:
                     response_code = "NOREQ"
                     conn.sendall(response_code.encode())
