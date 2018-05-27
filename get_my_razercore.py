@@ -10,6 +10,7 @@ import json
 
 RETRIEVE_DATA = 0
 SOCKET_CONNECTION = 1
+NUM_TRIAL = 3
 def retrieve_data():
     """
     Ebay webpage. pgn indicates the page number. We need to iterate through all its pages
@@ -48,17 +49,31 @@ if (SOCKET_CONNECTION):
         
         print("Server is running")
         while True:
-            conn, addr = s.accept();
+            conn, addr = s.accept(); # establish connection
             print("connected by", addr);
-            #print(repr(conn.recv(1024)));
-            with conn:
 
-                msg = conn.recv(1024);
-                if msg.decode('utf-8') == "request":
-                    list = retrieve_data();
-                    json_str = json.dumps(list);
-                    conn.sendall(json_str.encode());
+            with conn:
+                msg = conn.recv(1024);  # received request code
+                """ TODO: the naming of request code needs to be changed"""
+                if msg.decode('utf-8') == "request": # if request code is: request
+                    trial = 0;
+                    response_code = ""
+                    while trial < NUM_TRIAL:
+                        try:
+                            list = retrieve_data(); # aquire data
+                        except Exception as e:
+                            trial += 1 # on fail, we go for another trial to retrieve data
+                            if trial == 3:
+                                response_code = "ERROR";
+                        else:
+                            response_code = "DATA_"
+                            break # if data retrieval we break out of he loop and send the data
+                    json_str = json.dumps(list); # convert to json string
+                    conn.sendall(response_code.encode()); # send the response code
+                    conn.sendall(json_str.encode()); # send data
                 else:
+                    response_code = "NOREQ"
+                    conn.sendall(response_code.encode())
                     conn.sendall(b"bye");
                 
 
