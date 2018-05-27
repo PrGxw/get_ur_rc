@@ -65,7 +65,7 @@ def extract_rc_info_with_page(page):
     soup = BeautifulSoup(page, "html.parser")
     # number of pages
     result_txt = soup.find(string=re.compile("results")).string
-    print(result_txt[:-8])
+    print("NumberOfResutls: " + result_txt[:-8])
     num_page = (int(result_txt[:-8]) // 50 ) + 1
     # first we need to know which version of the html did we get.
     # is it using class "vip" or "s-items" for the items on sale

@@ -7,10 +7,10 @@ import socket_util
 import socket
 import json
 
-
 RETRIEVE_DATA = 0
-SOCKET_CONNECTION = 1
+SOCKET_CONNECTION = 0
 NUM_TRIAL = 3
+
 def retrieve_data():
     """
     Ebay webpage. pgn indicates the page number. We need to iterate through all its pages
@@ -29,15 +29,14 @@ def retrieve_data():
     while i <= num_page:
         url = "https://www.ebay.com/sch/i.html?_from=R40&_nkw=razer+core&_sacat=0&_pgn={}".format(i)
         page = urllib.request.urlopen(url).read().decode("utf-8")
-        title_price_list.append(util.extract_rc_info(page))
+        title_price_list.extend(util.extract_rc_info(page))
         i += 1
-    # print(title_price_list)
-    # print(len(title_price_list))
-    # print(num_page)
+
+
     return title_price_list
 
     """ TODO: serialize the title_price_list and send to mobile device."""
-
+retrieve_data()
 HOST = "149.28.44.30"  # '114.246.73.95'
 PORT = 10101
 
