@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """sources:
 html parsing: http://www.boddie.org.uk/python/HTML.html
 """
