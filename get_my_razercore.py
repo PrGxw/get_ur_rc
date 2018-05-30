@@ -9,7 +9,7 @@ import socket
 import json
 
 RETRIEVE_DATA = 0
-SOCKET_CONNECTION = 1
+SOCKET_CONNECTION = 0
 NUM_TRIAL = 3
 
 def retrieve_data():
@@ -75,7 +75,7 @@ if (SOCKET_CONNECTION):
                         json_str = json.dumps(list); # convert to json string
                         conn.sendall(json_str.encode()); # send data
                     elif response_code == "ERROR\n":
-                        conn.sendall("No Data Were Found!".encod());
+                        conn.sendall("No Data Were Found!".encode());
 
                     
                 else:
