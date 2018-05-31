@@ -13,37 +13,18 @@ def extract_info(keyword="razer core", site="ebay"):
         exit(-1)
     page = get_html_from_url(url);
     # initialize beautiful soup
-    return_list = []
+    title_price_list = []
     soup = BeautifulSoup(page, "html.parser")
     # number of pages
     result_txt = soup.find(string=re.compile("results")).string
     num_page = (int(result_txt[:-8]) // 50 ) + 1
-    # extract core information
-    l = soup.findAll("li",class_="s-item"); # list of soup objects that contain keywords razer core
-    title_price_list = []
-    for item in l:
-        title = item.find(string=re.compile("[Rr]azer [Cc]ore"))
-        if title == None:
-            continue;
-        price = item.findAll(class_="s-item__price")[0].string;
-        title_price_list.append((title, price))
+    title_price_list = soup_find(soup, title_price_list)
     print(len(title_price_list))
-    for i in range(1,num_page):
+    for i in range(2,num_page):
         url = "https://www.ebay.com/sch/i.html?_from=R40&_nkw=razer+core&_sacat=0&_pgn={}".format(i);
         page = get_html_from_url(url);
         soup = BeautifulSoup(page, "html.parser")
-        # number of pages
-        result_txt = soup.find(string=re.compile("results")).string
-        num_page = (int(result_txt[:-8]) // 50) + 1
-        # extract core information
-        l = soup.findAll("li", class_="s-item");  # list of soup objects that contain keywords razer core
-
-        for item in l:
-            title = item.find(string=re.compile("[Rr]azer [Cc]ore"))
-            if title == None:
-                continue;
-            price = item.findAll(class_="s-item__price")[0].string;
-            title_price_list.append((title, price))
+        title_price_list = soup_find(soup, title_price_list)
         print(len(title_price_list))
     return title_price_list
 
@@ -57,3 +38,14 @@ def get_html_from_url(url):
         exit(-1)
     return page
 
+def soup_find(soup, title_price_list):
+    l = soup.findAll("li",class_="s-item"); # list of soup objects that contain keywords razer core
+    for item in l:
+        # RETURN: title
+        title = item.find(string=re.compile("[Rr]azer [Cc]ore"))
+        if title == None:
+            continue;
+        price = item.findAll(class_="s-item__price")[0].string;
+        
+        title_price_list.append((title, price))
+    return title_price_list
