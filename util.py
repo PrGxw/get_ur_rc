@@ -40,12 +40,31 @@ def get_html_from_url(url):
 
 def soup_find(soup, title_price_list):
     l = soup.findAll("li",class_="s-item"); # list of soup objects that contain keywords razer core
+    is_bid = False;
     for item in l:
         # RETURN: title
         title = item.find(string=re.compile("[Rr]azer [Cc]ore"))
         if title == None:
             continue;
-        price = item.findAll(class_="s-item__price")[0].string;
-        
-        title_price_list.append((title, price))
+        # price = item.findAll(class_="s-item__price")[0].string;
+        prices = item.findAll(class_="s-item__price");
+        price = prices[0].string
+        # RETURN: time-end
+        time_end = item.find(class_="s-item__time-end").string;
+        if time_end == None:
+            is_bid = False;
+        else:
+            is_bid = True;
+        if (is_bid):
+            if len(prices) == 2:
+                bid_price = prices[0].string
+                buy_price = prices[1].string
+            else:
+                bid_price = prices[0].string
+                buy_price = None
+        else:
+            bid_price = None
+            buy_price = prices[0].string
+
+        title_price_list.append((title, price, is_bid, bid_price, buy_price))
     return title_price_list
