@@ -55,7 +55,8 @@ def soup_find(soup, title_price_list):
             is_bid = False;
         else:
             is_bid = True;
-        time_end = time_end.string
+            time_end = time_end.string
+
         if (is_bid):
             if len(prices) == 2:
                 bid_price = prices[0].string
@@ -69,3 +70,5 @@ def soup_find(soup, title_price_list):
 
         title_price_list.append((title, price, is_bid, bid_price, buy_price, time_end))
     return title_price_list
+
+print(extract_info())
