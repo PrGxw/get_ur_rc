@@ -9,7 +9,7 @@ import socket
 import json
 
 RETRIEVE_DATA = 0
-SOCKET_CONNECTION = 0
+SOCKET_CONNECTION = 1
 NUM_TRIAL = 3
 
 def retrieve_data():
@@ -60,7 +60,7 @@ if (SOCKET_CONNECTION):
                     response_code = ""
                     while trial < NUM_TRIAL:
                         try:
-                            list = retrieve_data(); # aquire data
+                            list = util.extract_info(); # aquire data
                         except Exception as e:
                             trial += 1 # on fail, we go for another trial to retrieve data
                             print("tiral");
