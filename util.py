@@ -70,5 +70,3 @@ def soup_find(soup, title_price_list):
 
         title_price_list.append((title, price, is_bid, bid_price, buy_price, time_end))
     return title_price_list
-
-print(extract_info())
