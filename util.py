@@ -50,12 +50,12 @@ def soup_find(soup, title_price_list):
         prices = item.findAll(class_="s-item__price");
         price = prices[0].string
         # RETURN: time-end
-        time_end = item.find(class_="s-item__time-end");
-        if time_end == None:
+        time_left = item.find(class_="s-item__time-left");
+        if time_left == None:
             is_bid = False;
         else:
             is_bid = True;
-            time_end = time_end.string
+            time_left = time_left.string
 
         if (is_bid):
             if len(prices) == 2:
@@ -67,6 +67,8 @@ def soup_find(soup, title_price_list):
         else:
             bid_price = None
             buy_price = prices[0].string
-
-        title_price_list.append((title, price, is_bid, bid_price, buy_price, time_end))
+        link = item.find(class_="s-item__link").get('href');
+        title_price_list.append((title, price, is_bid, bid_price, buy_price, time_left, link))
     return title_price_list
+
+print(extract_info())
