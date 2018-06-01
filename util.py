@@ -68,7 +68,5 @@ def soup_find(soup, title_price_list):
             bid_price = None
             buy_price = prices[0].string
         link = item.find(class_="s-item__link").get('href');
-        title_price_list.append((title, price, is_bid, bid_price, buy_price, time_left, link))
+        title_price_list.append((title, price, is_bid, len(prices), bid_price, buy_price, time_left, link))
     return title_price_list
-
-print(extract_info())
